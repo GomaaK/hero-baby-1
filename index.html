@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Baby × Hadoota — Micro Drama Research</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap');
+
+:root {
+  --black: #0D0D0D;
+  --dark: #141414;
+  --card: #1A1A1A;
+  --card-hover: #222222;
+  --border: #2A2A2A;
+  --red: #E63946;
+  --red-glow: rgba(230, 57, 70, 0.15);
+  --red-dim: rgba(230, 57, 70, 0.6);
+  --white: #FFFFFF;
+  --gray-100: #F5F5F5;
+  --gray-300: #D4D4D4;
+  --gray-400: #A3A3A3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --font-en: 'Inter', -apple-system, sans-serif;
+  --font-ar: 'Noto Kufi Arabic', 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--red-dim) var(--dark); }
+
+body {
+  font-family: var(--font-en);
+  background: var(--black);
+  color: var(--gray-300);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--red); z-index: 1000; transition: width 0.1s linear; width: 0%; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(13,13,13,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
+nav.scrolled { border-bottom-color: var(--border); }
+.nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.nav-brand span { font-family: var(--font-ar); font-size: 1.25rem; font-weight: 700; color: var(--white); }
+.nav-dots { display: flex; gap: 0.5rem; align-items: center; }
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-600); border: none; cursor: pointer; transition: all 0.3s ease; position: relative; }
+.nav-dot:hover { background: var(--gray-400); }
+.nav-dot.active { background: var(--red); transform: scale(1.3); }
+.nav-dot .tooltip { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: var(--card); border: 1px solid var(--border); color: var(--gray-300); padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+.nav-dot:hover .tooltip { opacity: 1; }
+
+section { min-height: 100vh; padding: 6rem 2rem 4rem; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 1200px; margin: 0 auto; }
+.section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+.section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; color: var(--white); margin-bottom: 0.5rem; letter-spacing: -0.02em; opacity: 0; transform: translateY(30px); transition: all 0.7s ease 0.1s; }
+.section-subtitle { font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--gray-400); font-weight: 300; max-width: 600px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 0.7s ease 0.2s; }
+.visible .section-label, .visible .section-title, .visible .section-subtitle { opacity: 1; transform: translateY(0); }
+
+#cover { text-align: center; min-height: 100vh; position: relative; overflow: hidden; }
+#cover::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 50% 30%, var(--red-glow) 0%, transparent 50%); animation: pulse-glow 8s ease-in-out infinite; }
+@keyframes pulse-glow { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
+.cover-content { position: relative; z-index: 1; }
+.cover-agency { font-family: var(--font-ar); font-size: 1rem; color: var(--gray-500); margin-bottom: 2rem; letter-spacing: 0.1em; }
+.cover-client { font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; margin-bottom: 1rem; }
+.cover-client .red { color: var(--red); }
+.cover-line { width: 60px; height: 2px; background: var(--red); margin: 2rem auto; }
+.cover-desc { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--gray-400); font-weight: 300; max-width: 500px; margin: 0 auto 3rem; }
+.cover-meta { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+.cover-meta-item { text-align: center; }
+.cover-meta-item .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray-600); margin-bottom: 0.25rem; }
+.cover-meta-item .value { font-size: 0.9rem; color: var(--gray-300); font-weight: 500; }
+.scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--gray-600); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; animation: float 2s ease-in-out infinite; }
+.scroll-hint .arrow { width: 20px; height: 20px; border-right: 1.5px solid var(--gray-600); border-bottom: 1.5px solid var(--gray-600); transform: rotate(45deg); }
+@keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; width: 100%; margin-top: 3rem; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; opacity: 0; transform: translateY(30px); cursor: default; }
+.stat-card:hover { border-color: var(--red-dim); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(230, 57, 70, 0.08); }
+.visible .stat-card { opacity: 1; transform: translateY(0); }
+.visible .stat-card:nth-child(1) { transition-delay: 0.1s; }
+.visible .stat-card:nth-child(2) { transition-delay: 0.2s; }
+.visible .stat-card:nth-child(3) { transition-delay: 0.3s; }
+.visible .stat-card:nth-child(4) { transition-delay: 0.4s; }
+.stat-number { font-size: 2.5rem; font-weight: 800; color: var(--white); line-height: 1; margin-bottom: 0.5rem; }
+.stat-number .red { color: var(--red); }
+.stat-label { font-size: 0.8rem; color: var(--gray-500); font-weight: 400; }
+
+.products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; width: 100%; margin-top: 3rem; }
+.product-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; opacity: 0; transform: translateY(20px); }
+.product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--red); transform: scaleY(0); transform-origin: top; transition: transform 0.3s ease; }
+.product-card:hover::before { transform: scaleY(1); }
+.product-card:hover { border-color: var(--red-dim); background: var(--card-hover); transform: translateY(-2px); }
+.visible .product-card { opacity: 1; transform: translateY(0); }
+.product-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.product-card h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+.product-card .desc { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; }
+.product-card .expand-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.product-card.expanded .expand-content { max-height: 300px; padding-top: 1rem; }
+.product-card .expand-content ul { list-style: none; padding: 0; }
+.product-card .expand-content li { font-size: 0.78rem; color: var(--gray-400); padding: 0.35rem 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+.product-card .expand-content li:last-child { border: none; }
+.product-card .expand-content li .price { color: var(--red); font-weight: 600; font-size: 0.75rem; }
+.expand-hint { font-size: 0.65rem; color: var(--gray-600); margin-top: 0.75rem; transition: color 0.2s; }
+.product-card:hover .expand-hint { color: var(--red); }
+
+.pain-tabs { display: flex; gap: 0.5rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center; width: 100%; }
+.pain-tab { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 0.6rem 1.25rem; font-size: 0.8rem; color: var(--gray-400); cursor: pointer; transition: all 0.3s ease; font-family: var(--font-en); font-weight: 500; }
+.pain-tab:hover { border-color: var(--gray-600); color: var(--gray-300); }
+.pain-tab.active { background: var(--red); border-color: var(--red); color: var(--white); }
+.pain-panel { width: 100%; margin-top: 2rem; display: none; animation: fadeIn 0.4s ease; }
+.pain-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.pain-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.pain-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; }
+.pain-card:hover { border-color: var(--red-dim); }
+.pain-card .pain-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.pain-card h4 { font-size: 0.95rem; color: var(--white); font-weight: 600; margin-bottom: 0.5rem; }
+.pain-card p { font-size: 0.82rem; color: var(--gray-500); line-height: 1.6; }
+.pain-card .severity { display: inline-block; margin-top: 0.75rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.25rem 0.6rem; border-radius: 100px; }
+.severity.high { background: rgba(230,57,70,0.15); color: var(--red); }
+.severity.medium { background: rgba(251,191,36,0.15); color: #FBBF24; }
+.severity.low { background: rgba(52,211,153,0.15); color: #34D399; }
+
+.timeline { width: 100%; margin-top: 3rem; position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 2rem; opacity: 0; transform: translateX(-20px); transition: all 0.5s ease; }
+.visible .timeline-item { opacity: 1; transform: translateX(0); }
+.visible .timeline-item:nth-child(1) { transition-delay: 0.1s; }
+.visible .timeline-item:nth-child(2) { transition-delay: 0.2s; }
+.visible .timeline-item:nth-child(3) { transition-delay: 0.3s; }
+.visible .timeline-item:nth-child(4) { transition-delay: 0.4s; }
+.timeline-item::before { content: ''; position: absolute; left: -2rem; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--black); border: 2px solid var(--red); }
+.timeline-date { font-size: 0.7rem; color: var(--red); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.timeline-title { font-size: 1.1rem; color: var(--white); font-weight: 600; margin-bottom: 0.5rem; }
+.timeline-desc { font-size: 0.85rem; color: var(--gray-400); max-width: 600px; }
+.timeline-tag { display: inline-block; margin-top: 0.5rem; font-size: 0.65rem; color: var(--gray-500); background: var(--card); border: 1px solid var(--border); padding: 0.2rem 0.6rem; border-radius: 100px; }
+
+.insight-box { background: linear-gradient(135deg, rgba(230,57,70,0.08) 0%, rgba(230,57,70,0.02) 100%); border: 1px solid rgba(230,57,70,0.2); border-radius: 12px; padding: 2rem; margin-top: 3rem; width: 100%; position: relative; overflow: hidden; }
+.insight-box::before { content: '💡'; position: absolute; top: -10px; right: -10px; font-size: 6rem; opacity: 0.05; }
+.insight-box h3 { font-size: 1rem; color: var(--red); font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+.insight-box p { font-size: 0.88rem; color: var(--gray-300); line-height: 1.7; }
+
+.opportunity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; width: 100%; margin-top: 3rem; }
+.opp-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; position: relative; opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
+.opp-card:hover { border-color: var(--red-dim); }
+.visible .opp-card { opacity: 1; transform: translateY(0); }
+.opp-card .opp-num { font-size: 0.65rem; font-weight: 600; color: var(--red); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.opp-card h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+.opp-card p { font-size: 0.82rem; color: var(--gray-500); line-height: 1.6; }
+
+/* ══════════════════════════════════════════════════
+   ── Ideas Hub Section ──
+   ══════════════════════════════════════════════════ */
+
+.ideas-hub { width: 100%; margin-top: 3rem; }
+
+.idea-tabs { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.idea-tab-btn { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 0.65rem 1.5rem; font-size: 0.85rem; color: var(--gray-400); cursor: pointer; transition: all 0.3s ease; font-family: var(--font-en); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+.idea-tab-btn:hover { border-color: var(--gray-600); color: var(--gray-300); }
+.idea-tab-btn.active { background: var(--red); border-color: var(--red); color: var(--white); box-shadow: 0 4px 20px rgba(230,57,70,0.25); }
+.idea-tab-btn .tab-count { background: rgba(255,255,255,0.15); padding: 0.1rem 0.45rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+.idea-tab-btn.active .tab-count { background: rgba(255,255,255,0.25); }
+
+.idea-tab-panel { display: none; animation: fadeIn 0.4s ease; }
+.idea-tab-panel.active { display: block; }
+
+/* Storyboard Cards */
+.storyboard-grid { display: grid; gap: 1.25rem; }
+.storyboard-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.4s ease; position: relative; opacity: 0; transform: translateY(20px); }
+.storyboard-card:hover { border-color: var(--red-dim); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(230,57,70,0.08); }
+.visible .storyboard-card { opacity: 1; transform: translateY(0); }
+.visible .storyboard-card:nth-child(1) { transition-delay: 0.03s; }
+.visible .storyboard-card:nth-child(2) { transition-delay: 0.06s; }
+.visible .storyboard-card:nth-child(3) { transition-delay: 0.09s; }
+.visible .storyboard-card:nth-child(4) { transition-delay: 0.12s; }
+.visible .storyboard-card:nth-child(5) { transition-delay: 0.15s; }
+.visible .storyboard-card:nth-child(6) { transition-delay: 0.18s; }
+.visible .storyboard-card:nth-child(7) { transition-delay: 0.21s; }
+.visible .storyboard-card:nth-child(8) { transition-delay: 0.24s; }
+.visible .storyboard-card:nth-child(9) { transition-delay: 0.27s; }
+.visible .storyboard-card:nth-child(10) { transition-delay: 0.30s; }
+
+.sb-card-header { display: flex; align-items: stretch; min-height: 120px; }
+.sb-number-strip { width: 60px; min-width: 60px; background: linear-gradient(180deg, var(--red) 0%, rgba(230,57,70,0.3) 100%); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+.sb-card-content { flex: 1; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; position: relative; }
+.sb-top-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
+.sb-type-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.65rem; border-radius: 100px; }
+.sb-type-badge.emotional { background: rgba(230,57,70,0.12); color: #F87171; }
+.sb-type-badge.comedic { background: rgba(251,191,36,0.12); color: #FBBF24; }
+.sb-type-badge.heritage { background: rgba(168,139,250,0.12); color: #A78BFA; }
+.sb-type-badge.action { background: rgba(59,210,246,0.12); color: #22D3EE; }
+.sb-type-badge.heartwarming { background: rgba(52,211,153,0.12); color: #34D399; }
+.sb-type-badge.heritage-emotional { background: linear-gradient(135deg, rgba(168,139,250,0.12), rgba(230,57,70,0.12)); color: #C084FC; }
+.sb-type-badge.comedic-action { background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(59,210,246,0.12)); color: #67E8F9; }
+.sb-type-badge.heritage-action { background: linear-gradient(135deg, rgba(168,139,250,0.12), rgba(59,210,246,0.12)); color: #93C5FD; }
+
+.sb-platforms { display: flex; gap: 0.35rem; }
+.sb-platform-tag { font-size: 0.6rem; color: var(--gray-500); background: var(--card-hover); border: 1px solid var(--border); padding: 0.12rem 0.45rem; border-radius: 4px; }
+.sb-titles { margin-top: auto; }
+.sb-title-en { font-size: 1.1rem; font-weight: 700; color: var(--white); line-height: 1.3; }
+.sb-title-ar { font-family: var(--font-ar); font-size: 0.95rem; color: var(--gray-400); font-weight: 500; }
+.sb-hook-preview { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 0.25rem; }
+.sb-expand-icon { position: absolute; top: 1.25rem; right: 1.25rem; width: 28px; height: 28px; border-radius: 50%; background: var(--card-hover); border: 1px solid var(--border); color: var(--gray-400); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+.storyboard-card:hover .sb-expand-icon { border-color: var(--red-dim); color: var(--red); }
+.storyboard-card.expanded .sb-expand-icon { background: var(--red); border-color: var(--red); color: var(--white); transform: rotate(180deg); }
+
+/* Expanded Body */
+.sb-expand-body { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.storyboard-card.expanded .sb-expand-body { max-height: 5000px; }
+.sb-expand-inner { padding: 0 1.5rem 2rem; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+
+/* 4-Frame Storyboard */
+.sb-frames { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+.sb-frame { background: rgba(230,57,70,0.04); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; position: relative; overflow: hidden; }
+.sb-frame::before { content: attr(data-frame); position: absolute; top: 0; left: 0; right: 0; padding: 0.3rem 0; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); background: var(--red); }
+.sb-frame-icon { font-size: 2rem; margin-top: 1rem; margin-bottom: 0.5rem; }
+.sb-frame-label { font-size: 0.7rem; font-weight: 600; color: var(--red); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.sb-frame-text { font-size: 0.75rem; color: var(--gray-400); line-height: 1.5; }
+
+/* Script Dialogue */
+.sb-script { background: rgba(230,57,70,0.04); border-left: 3px solid var(--red-dim); border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+.sb-script h4 { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--red); margin-bottom: 0.75rem; }
+.sb-script p { font-size: 0.85rem; color: var(--gray-300); line-height: 1.7; font-style: italic; }
+.sb-script p strong { color: var(--white); font-style: normal; }
+
+/* Product Tags */
+.sb-product-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.sb-product-tag { background: var(--card-hover); border: 1px solid var(--border); padding: 0.3rem 0.75rem; border-radius: 100px; font-size: 0.75rem; color: var(--gray-300); transition: all 0.2s; }
+.sb-product-tag:hover { border-color: var(--red-dim); color: var(--red); }
+
+/* CTA Band */
+.sb-cta-band { background: linear-gradient(135deg, rgba(230,57,70,0.12) 0%, rgba(230,57,70,0.04) 100%); border: 1px solid rgba(230,57,70,0.2); border-radius: 12px; padding: 1.15rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.sb-cta-band .cta-icon { font-size: 1.5rem; }
+.sb-cta-band .cta-text { font-size: 0.85rem; color: var(--white); font-weight: 500; }
+.sb-cta-band .cta-text em { color: var(--red); font-style: normal; font-weight: 600; }
+
+/* Brainstorm Tab */
+.brainstorm-container { max-width: 700px; margin: 0 auto; }
+.brainstorm-form { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+.brainstorm-form h3 { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+.brainstorm-form .form-desc { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 1.5rem; }
+.sb-form-group { margin-bottom: 1.25rem; }
+.sb-form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.sb-form-group input, .sb-form-group select, .sb-form-group textarea { width: 100%; background: var(--dark); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.88rem; color: var(--gray-300); font-family: var(--font-en); transition: border-color 0.3s ease; outline: none; }
+.sb-form-group input:focus, .sb-form-group select:focus, .sb-form-group textarea:focus { border-color: var(--red-dim); }
+.sb-form-group textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+.sb-form-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23737373' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+.sb-form-group select option { background: var(--dark); color: var(--gray-300); }
+.sb-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.sb-submit-btn { width: 100%; background: var(--red); border: none; border-radius: 100px; padding: 0.85rem 2rem; font-size: 0.9rem; font-weight: 600; color: var(--white); cursor: pointer; transition: all 0.3s ease; font-family: var(--font-en); }
+.sb-submit-btn:hover { background: #d32f3d; box-shadow: 0 6px 25px rgba(230,57,70,0.3); transform: translateY(-1px); }
+
+.submitted-ideas-title { font-size: 0.9rem; font-weight: 600; color: var(--gray-400); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.submitted-ideas-title .count-badge { background: var(--red); color: var(--white); font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 100px; }
+#submittedIdeas .storyboard-card { opacity: 1; transform: translateY(0); }
+
+/* Ideas Hub Responsive */
+@media (max-width: 768px) {
+  .sb-frames { grid-template-columns: repeat(2, 1fr); }
+  .sb-number-strip { width: 45px; min-width: 45px; font-size: 1.35rem; }
+  .sb-card-content { padding: 1rem 1.25rem; }
+  .sb-title-en { font-size: 0.95rem; }
+  .sb-expand-icon { top: 1rem; right: 1rem; width: 24px; height: 24px; font-size: 0.75rem; }
+  .sb-form-row { grid-template-columns: 1fr; }
+  .sb-expand-inner { padding: 0 1rem 1.5rem; padding-top: 1.25rem; }
+  .storyboard-card.expanded .sb-expand-body { max-height: 8000px; }
+}
+@media (max-width: 480px) {
+  .sb-frames { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .sb-frame { padding: 0.75rem 0.5rem; }
+  .sb-frame-icon { font-size: 1.5rem; }
+  .sb-frame-text { font-size: 0.7rem; }
+}
+
+/* ── Footer ── */
+footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
+footer .footer-brand { font-family: var(--font-ar); font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+footer .footer-line { width: 30px; height: 2px; background: var(--red); margin: 1rem auto; }
+footer p { font-size: 0.75rem; color: var(--gray-600); }
+
+/* ── Global Responsive ── */
+@media (max-width: 768px) {
+  nav { padding: 0.75rem 1rem; }
+  section { padding: 5rem 1.25rem 3rem; }
+  .nav-dots { display: none; }
+  .cover-meta { gap: 1.25rem; }
+  .pain-tabs { gap: 0.35rem; }
+  .pain-tab { font-size: 0.72rem; padding: 0.5rem 1rem; }
+  .stat-number { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav id="navbar">
+  <a href="#cover" class="nav-brand"><span>حدوتة</span></a>
+  <div class="nav-dots" id="navDots">
+    <button class="nav-dot active" data-section="cover"><span class="tooltip">Cover</span></button>
+    <button class="nav-dot" data-section="brand"><span class="tooltip">Brand Profile</span></button>
+    <button class="nav-dot" data-section="products"><span class="tooltip">Products</span></button>
+    <button class="nav-dot" data-section="audience"><span class="tooltip">Audience</span></button>
+    <button class="nav-dot" data-section="campaigns"><span class="tooltip">Campaigns</span></button>
+    <button class="nav-dot" data-section="opportunity"><span class="tooltip">Opportunity</span></button>
+    <button class="nav-dot" data-section="ideas"><span class="tooltip">Creative Ideas</span></button>
+  </div>
+</nav>
+
+<!-- ══════════ COVER ══════════ -->
+<section id="cover">
+  <div class="cover-content">
+    <div class="cover-agency">A presentation by <span style="color:var(--white);">حدوتة</span></div>
+    <div class="cover-client">HERO <span class="red">BABY</span></div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">Micro Drama Campaign — Audience Research & Creative Opportunities</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="label">Client</div><div class="value">Hero Baby Egypt</div></div>
+      <div class="cover-meta-item"><div class="label">Category</div><div class="value">Baby Nutrition</div></div>
+      <div class="cover-meta-item"><div class="label">Document Type</div><div class="value">Research & Strategy</div></div>
+      <div class="cover-meta-item"><div class="label">Date</div><div class="value">June 2026</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll to explore</span><div class="arrow"></div></div>
+</section>
+
+<!-- ══════════ BRAND PROFILE ══════════ -->
+<section id="brand" class="observe-section">
+  <div class="section-label">Chapter 01</div>
+  <div class="section-title">Brand Profile</div>
+  <div class="section-subtitle">Who is Hero Baby — heritage, positioning, and digital footprint in Egypt</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-number">140<span class="red">+</span></div><div class="stat-label">Years of Heritage<br>Swiss Hero Group — Est. 1886</div></div>
+    <div class="stat-card"><div class="stat-number">909<span class="red">K</span></div><div class="stat-label">Facebook Followers<br>Primary social channel</div></div>
+    <div class="stat-card"><div class="stat-number">37<span class="red">K</span></div><div class="stat-label">Instagram Followers<br>627+ posts published</div></div>
+    <div class="stat-card"><div class="stat-number">19.6<span class="red">K</span></div><div class="stat-label">TikTok Followers<br>Organic growth, high engagement</div></div>
+  </div>
+  <div class="insight-box">
+    <h3>🔬 Key Finding</h3>
+    <p>Hero Baby Egypt is backed by the <strong>Swiss Hero Group</strong> — a CHF 1.14B global food company operating in Europe, North America, MEA, and Turkey. Their Cairo-based MEA division operates the largest jam factory in the Middle East and has been producing baby nutrition for over 20 years. The brand sits at the intersection of <strong>Swiss quality heritage</strong> and <strong>deep local roots in Egypt</strong> — a powerful narrative anchor for micro drama storytelling.</p>
+  </div>
+</section>
+
+<!-- ══════════ PRODUCTS ══════════ -->
+<section id="products" class="observe-section">
+  <div class="section-label">Chapter 02</div>
+  <div class="section-title">Product Universe</div>
+  <div class="section-subtitle">28 SKUs across 7 categories — from first spoon to toddler nutrition</div>
+  <div class="products-grid">
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">🥛</div><h3>Formula Milk</h3><div class="desc">Core range + specialty solutions for every baby's needs</div>
+      <div class="expand-content"><ul>
+        <li>Stage 1 — Birth to 6 months <span class="price">EGP 325</span></li>
+        <li>Stage 2 — Follow-on 6-12 months <span class="price">EGP 335</span></li>
+        <li>Stage 3 — Growing up 12-36 months <span class="price">—</span></li>
+        <li>NutraSense HMO 1 & 2 — Immune support <span class="price">EGP 436</span></li>
+        <li>NutraDefense 1, 2 & 3 Plus — Protection <span class="price">EGP 403-459</span></li>
+        <li>HA — Hypoallergenic <span class="price">EGP 490</span></li>
+        <li>Digest — Digestive comfort <span class="price">EGP 430</span></li>
+        <li>LF — Lactose-free <span class="price">EGP 436</span></li>
+      </ul></div>
+      <div class="expand-hint">Click to see all variants →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">🥣</div><h3>Cereals</h3><div class="desc">Iron-fortified, Omega-enriched weaning cereals from 6+ months</div>
+      <div class="expand-content"><ul>
+        <li>Rice with Milk (150g) <span class="price">EGP 120</span></li>
+        <li>Wheat with Milk (150g) <span class="price">EGP 120</span></li>
+        <li>8 Cereals with Milk (150g) <span class="price">EGP 120</span></li>
+        <li>Key nutrients: Iron (50% RDI), Omega 3 & 6, Vitamins A,B,C,D</li>
+      </ul></div>
+      <div class="expand-hint">Click to see all variants →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">🥕</div><h3>Pureed Food</h3><div class="desc">Homemade-inspired jars — real fruits, vegetables & meals</div>
+      <div class="expand-content"><ul>
+        <li>Mixed Vegetables (125ml) <span class="price">EGP 86</span></li>
+        <li>Rice & Chicken (125ml) <span class="price">EGP 86</span></li>
+        <li>3 Fruits (125ml) <span class="price">EGP 86</span></li>
+        <li>Yoghurt & Pear (125ml) <span class="price">EGP 86</span></li>
+        <li>Prunes (125ml) <span class="price">EGP 80</span></li>
+        <li>Potato Puree 6M+ (120g) <span class="price">EGP 74</span></li>
+        <li>Rice Zucchini Soup (125g) <span class="price">EGP 80</span></li>
+      </ul></div>
+      <div class="expand-hint">Click to see all variants →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">🍪</div><h3>Baby Biscuits</h3><div class="desc">Teething-safe biscuits for snacking and self-feeding</div>
+      <div class="expand-content"><ul><li>Designed for baby's developing motor skills</li><li>Easy to dissolve — safe for emerging teeth</li></ul></div>
+      <div class="expand-hint">Click for details →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">💧</div><h3>Hero ORS</h3><div class="desc">Oral rehydration solution for dehydration recovery</div>
+      <div class="expand-content"><ul><li>Strawberry flavor (200ml) <span class="price">EGP 172</span></li><li>Essential for hot Egyptian summers & diarrhea episodes</li></ul></div>
+      <div class="expand-hint">Click for details →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">☀️</div><h3>Vitamin D Drops</h3><div class="desc">Supplement for healthy bone development in babies</div>
+      <div class="expand-content"><ul><li>Critical supplement — especially for Egyptian babies with limited sun-safe exposure</li></ul></div>
+      <div class="expand-hint">Click for details →</div>
+    </div>
+    <div class="product-card" onclick="toggleCard(this)">
+      <div class="icon">🛡️</div><h3>Hero PRO</h3><div class="desc">Specialized nutritional support products</div>
+      <div class="expand-content"><ul><li>Premium tier in the Hero Baby portfolio</li><li>Targeted nutrition for specific developmental needs</li></ul></div>
+      <div class="expand-hint">Click for details →</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ AUDIENCE & PAIN POINTS ══════════ -->
+<section id="audience" class="observe-section">
+  <div class="section-label">Chapter 03</div>
+  <div class="section-title">Audience & Pain Points</div>
+  <div class="section-subtitle">What keeps Egyptian mothers up at night — the emotional landscape we'll tap into</div>
+  <div class="pain-tabs">
+    <button class="pain-tab active" onclick="switchTab('feeding')">Feeding Struggles</button>
+    <button class="pain-tab" onclick="switchTab('emotional')">Emotional Burden</button>
+    <button class="pain-tab" onclick="switchTab('decision')">Decision Paralysis</button>
+    <button class="pain-tab" onclick="switchTab('social')">Social Pressure</button>
+  </div>
+  <div class="pain-panel active" id="tab-feeding">
+    <div class="pain-card-grid">
+      <div class="pain-card"><div class="pain-icon">🍼</div><h4>Early Weaning Anxiety</h4><p>Nearly <strong>2/3 of Egyptian mothers wean before 6 months</strong>. The transition from breast/formula to solids is filled with fear: "Am I doing it right? Is my baby getting enough?" The first spoon is a monumental emotional moment.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">😢</div><h4>Colic & Digestion Issues</h4><p>Up to 25% of infants experience colic. Egyptian mothers often try 3-4 formula brands before finding one that works. The nighttime crying, the guilt, the desperation — it's the most isolating experience of early motherhood.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">🚫</div><h4>Food Refusal & Picky Eating</h4><p>Babies rejecting new textures and tastes is universal, but in Egyptian culture where food = love, a baby refusing food feels like personal rejection. "My baby won't eat" is the #1 complaint in mom groups.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">💊</div><h4>Formula Affordability & Shortages</h4><p>Egypt experienced <strong>up to 30% formula shortages</strong> in 2024. With government subsidy changes and rising prices, mothers are stressed about access and affordability — especially for specialty formulas like HA, Digest, and LF.</p><span class="severity medium">MEDIUM SEVERITY</span></div>
+    </div>
+  </div>
+  <div class="pain-panel" id="tab-emotional">
+    <div class="pain-card-grid">
+      <div class="pain-card"><div class="pain-icon">😔</div><h4>Mom Guilt</h4><p>"I'm not doing enough." The constant comparison with Instagram-perfect moms, the pediatrician's disappointed tone, the mother-in-law's criticism — Egyptian moms carry immense guilt about every feeding decision.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">😴</div><h4>Chronic Exhaustion</h4><p>Sleep deprivation is the silent epidemic. Egyptian households often lack the support structures (nannies, extended family nearby) that some other cultures have. "I haven't slept more than 3 hours since my baby was born."</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">🫂</div><h4>Isolation & Loneliness</h4><p>Despite being a social culture, new motherhood in Egypt is surprisingly isolating. Friends move on, social life pauses, and the living room becomes the entire world. TikTok and Facebook groups become the only social outlet.</p><span class="severity medium">MEDIUM SEVERITY</span></div>
+    </div>
+  </div>
+  <div class="pain-panel" id="tab-decision">
+    <div class="pain-card-grid">
+      <div class="pain-card"><div class="pain-icon">😵</div><h4>Information Overload</h4><p>Doctors say one thing. Grandmothers say another. Facebook groups share horror stories. TikTok influencers push products. "I read 20 articles and I'm more confused than before." Egyptian moms are drowning in conflicting advice.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">🔍</div><h4>Trust Deficit</h4><p>Which brand can I actually trust? Local vs. imported? Organic vs. regular? Marketing claims vs. real results? Egyptian mothers are skeptical of traditional advertising — they want proof, stories, and peer validation.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">📊</div><h4>Nutritional Knowledge Gaps</h4><p>UNICEF data shows Egypt has a "double burden" of malnutrition — both under-nutrition and rising childhood obesity. Many mothers lack basic knowledge about iron, Omega-3, and vitamin needs during the critical 0-2 window.</p><span class="severity medium">MEDIUM SEVERITY</span></div>
+    </div>
+  </div>
+  <div class="pain-panel" id="tab-social">
+    <div class="pain-card-grid">
+      <div class="pain-card"><div class="pain-icon">👨‍👩‍👧</div><h4>Extended Family Interference</h4><p>In Egyptian culture, child-rearing is a communal affair — whether the mother wants it or not. Mothers-in-law, aunts, and grandmothers all have strong opinions about feeding, weaning, and formula. Setting boundaries is socially difficult.</p><span class="severity high">HIGH SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">📸</div><h4>Performative Motherhood</h4><p>Social media creates pressure to be the "perfect Egyptian mom" — organic, patient, always smiling. The gap between reality and performance creates deep anxiety and shame. "Everyone else's baby eats better than mine."</p><span class="severity medium">MEDIUM SEVERITY</span></div>
+      <div class="pain-card"><div class="pain-icon">💼</div><h4>Working Mom Dilemma</h4><p>Returning to work while managing feeding schedules, pumping, and ensuring adequate nutrition is exhausting. Many Egyptian moms feel they're failing at both career and motherhood. "I leave my baby to earn money, then spend it all on formula."</p><span class="severity high">HIGH SEVERITY</span></div>
+    </div>
+  </div>
+  <div class="insight-box">
+    <h3>🎯 Why This Matters for Micro Drama</h3>
+    <p>Traditional baby brand advertising says: "Our formula has iron and DHA." Micro drama says: <strong>"We see you at 3 AM, crying baby in one arm, phone in the other, Googling 'why won't my baby eat' — and we made this for you."</strong> The gap between functional messaging and emotional resonance is exactly where Hadoota creates impact. Every pain point above is a potential story arc.</p>
+  </div>
+</section>
+
+<!-- ══════════ CAMPAIGNS ══════════ -->
+<section id="campaigns" class="observe-section">
+  <div class="section-label">Chapter 04</div>
+  <div class="section-title">Current Campaign Direction</div>
+  <div class="section-subtitle">What Hero Baby is doing now — and the gap we're filling</div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">#فيه_المفيد — "It Has the Benefits"</div>
+      <div class="timeline-title">Current Master Campaign</div>
+      <div class="timeline-desc">The dominant hashtag across TikTok and Instagram. Functional messaging focused on nutritional benefits — iron, vitamins, Omega 3&6. Strong on TikTok with 9K+ likes per video.</div>
+      <span class="timeline-tag">TikTok + Instagram</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">المعلقة الأولى — "The First Spoon"</div>
+      <div class="timeline-title">Weaning Journey Campaign</div>
+      <div class="timeline-desc">Positioning Hero Baby as the mother's choice for the first solid food experience. Emotional angle around the milestone of first feeding. Strong concept but executed as product showcase, not story.</div>
+      <span class="timeline-tag">Facebook + TikTok</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Summer 2025 — "النهار في الصيف طويل"</div>
+      <div class="timeline-title">Energy & Activity Campaign</div>
+      <div class="timeline-desc">"Summer days are long, start with energy" — positioning Hero Baby 8-Cereal as the breakfast fuel for active babies. Seasonal, practical, but purely rational messaging.</div>
+      <span class="timeline-tag">Facebook</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Ongoing — Product Education</div>
+      <div class="timeline-title">Nutritional Content Series</div>
+      <div class="timeline-desc">Regular posts explaining product benefits: "Nutrition in the first two years is crucial." Educational, doctor-validated tone. Valuable but clinical — missing the emotional heartbeat.</div>
+      <span class="timeline-tag">All Platforms</span>
+    </div>
+  </div>
+  <div class="insight-box">
+    <h3>📏 The Gap Analysis</h3>
+    <p>Hero Baby's current content is <strong>90% functional, 10% emotional</strong>. They tell mothers WHAT their products contain, but rarely show mothers that they UNDERSTAND. There's no storytelling, no character arcs, no dramatic tension. The brand has all the right products and a loyal audience — but it's speaking to the brain, not the heart. <strong>Micro drama flips that ratio.</strong></p>
+  </div>
+</section>
+
+<!-- ══════════ OPPORTUNITY ══════════ -->
+<section id="opportunity" class="observe-section">
+  <div class="section-label">Chapter 05</div>
+  <div class="section-title">The Opportunity</div>
+  <div class="section-subtitle">Why micro drama, why now, and why Hadoota</div>
+  <div class="opportunity-grid">
+    <div class="opp-card"><div class="opp-num">Opportunity 01</div><h3>Egypt's TikTok Ad Awards Prove the Model</h3><p>Egyptian campaigns dominated the TikTok Ad Awards METAP 2025 — proving local audiences crave authentic, story-driven content. Micro drama is not experimental in this market; it's proven and expected by forward-thinking brands.</p></div>
+    <div class="opp-card"><div class="opp-num">Opportunity 02</div><h3>Moms Are the #1 TikTok Consumer in Egypt</h3><p>Parenting content is the fastest-growing vertical on Egyptian TikTok. Motherhood influencers, "day in my life" vlogs, and baby content generate massive engagement. The audience is already trained and waiting.</p></div>
+    <div class="opp-card"><div class="opp-num">Opportunity 03</div><h3>Competitors Are Still Doing Ads, Not Stories</h3><p>Nestlé, Bebelac, and Liptomil in Egypt still rely on traditional product demonstrations and influencer sponsored posts. No competitor has adopted micro drama storytelling — this is a blue ocean for Hero Baby to own.</p></div>
+    <div class="opp-card"><div class="opp-num">Opportunity 04</div><h3>Hero Baby Has the Product Story Depth</h3><p>With 28 SKUs across specialty formulas (Digest, HA, LF, NutraSense, NutraDefense), Hero Baby has real stories to tell — stories about colic relief, allergy struggles, and picky eating wins. The products ARE the drama.</p></div>
+    <div class="opp-card"><div class="opp-num">Opportunity 05</div><h3>The "First Spoon" Moment Is Iconic</h3><p>Every Egyptian mother remembers her baby's first spoon. This universal, emotionally charged moment is a creative goldmine. Hero Baby already planted the seed — we'll grow it into a story universe.</p></div>
+    <div class="opp-card"><div class="opp-num">Opportunity 06</div><h3>Hadoota's AI-Driven Production = Scale</h3><p>Traditional micro drama is expensive. Hadoota's AI-powered production model allows Hero Baby to produce a library of interconnected short dramas at scale — building a "soap opera" around baby nutrition that keeps audiences coming back.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ IDEAS HUB ══════════ -->
+<section id="ideas" class="observe-section">
+  <div class="section-label">Chapter 06</div>
+  <div class="section-title">Creative Ideas Hub</div>
+  <div class="section-subtitle">10 micro drama concepts — summer 2026, rooted in Hero Baby's heritage and Egyptian motherhood</div>
+
+  <div class="ideas-hub">
+    <div class="idea-tabs">
+      <button class="idea-tab-btn active" onclick="switchIdeaTab('all')">
+        🎬 All Ideas <span class="tab-count">10</span>
+      </button>
+      <button class="idea-tab-btn" onclick="switchIdeaTab('brainstorm')">
+        💡 Brainstorm <span class="tab-count" id="brainstormCount">0</span>
+      </button>
+    </div>
+
+    <!-- ═══ ALL IDEAS TAB ═══ -->
+    <div class="idea-tab-panel active" id="ideasPanel-all">
+      <div class="storyboard-grid" id="allIdeasGrid">
+
+        <!-- ─── IDEA 01 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">01</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge emotional">Emotional</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span><span class="sb-platform-tag">Instagram Reels</span><span class="sb-platform-tag">Facebook</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"3 AM في الصيف" — The Night Feed</div>
+              </div>
+              <div class="sb-hook-preview">A sleep-deprived mother at 3 AM, fan on full, baby won't stop crying — she opens the fridge and finds a pot of Hero Baby cereal she prepped. This is her moment.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🥄</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">3 AM. Fan on full. Baby crying. Hot Egyptian summer night.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">🌊</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Mother-in-law's voice echoes. Shaky hands prep cereal. Tears forming.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">✨</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Baby takes first bite — stops crying, gives tiniest smile. She exhales.</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🌙</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"ليست الليلة الأولى، ولن تكون الأخيرة — لكن كل معلقة فيها حاجة حلوة"</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>She sits on the kitchen floor, baby on her lap, spoon in hand. The baby takes the first bite — stops crying, looks up at her, and gives the tiniest smile. She exhales. Text overlay: <strong>"Not the first night, and not the last — but every spoon holds something sweet."</strong></p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥣 8 Cereals with Milk</span><span class="sb-product-tag">🥣 Wheat with Milk</span><span class="sb-product-tag">🥣 Rice with Milk</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — Share your 3 AM story in the comments</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 02 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">02</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heritage-emotional">Heritage + Emotional</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok Series</span><span class="sb-platform-tag">Instagram</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"المعلقة الأولى" — The Grandmother's Table</div>
+              </div>
+              <div class="sb-hook-preview">A young mother nervously prepares her baby's first solid food. Her grandmother sits across the table watching — judging? Guiding? A battle of generations over the first spoon.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">👵</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Grandmother watching. Young mom with Hero Baby puree. Silent tension.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">⚔️</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">"In my days we made it fresh at home." Room goes quiet. Generational clash.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🫶</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Grandmother tastes it, nods approvingly. Baby takes the spoon. Three generations united.</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🥄</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"أول معلقة بتجمع بيت — من غير ما تفرق بين الأمس والنهارده"</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>The grandmother reaches over, reads the Hero Baby label carefully, softens: <strong>"ده مش تاني عنايب يا امي — ده بيقولي إنتي بتبعدي عني صح"</strong> ("This isn't about me being wrong — it tells me you want the best for my grandchild.") She dips her finger, tastes it, and nods.</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥕 Mixed Vegetables</span><span class="sb-product-tag">🍎 3 Fruits</span><span class="sb-product-tag">🍗 Rice & Chicken</span><span class="sb-product-tag">🥔 Potato Puree</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#المعلقة_الأولى</em> — Tag the grandmother who taught you to love</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 03 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">03</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge emotional">Emotional</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok Series</span><span class="sb-platform-tag">Facebook</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"صيف بلا بكاء" — The Summer That Changed Everything</div>
+              </div>
+              <div class="sb-hook-preview">A father comes home to find his wife on the balcony, baby in arms, both crying. She whispers: "Nothing works. He's been screaming since noon."</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">☔</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">July heat. Father home. Wife and baby both crying on the balcony.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">💔</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">3-episode series. Tried everything. Pediatrician suggests Digest. Money fears. Father buys it secretly.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">☀️</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Baby sleeps through the night for the first time in weeks. Mother breaks down in relief.</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🌅</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"لما الطفل يرتاح، البيت كله بيستنيح"</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>Three days later. The baby sleeps through the night for the first time in weeks. The mother wakes up panicked, checks on the baby — he's peaceful. She breaks down, not from sadness but from relief. The father puts his arm around her. Morning light floods the room.</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🛡️ Digest Milk</span><span class="sb-product-tag">💧 ORS Strawberry</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#صيف_بلا_بكاء</em> — If your baby struggled with colic, you're not alone</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 04 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">04</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heritage">Heritage</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span><span class="sb-platform-tag">Instagram Reels</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"باكيت الزوجة الشغالة" — The Working Mom's Bag</div>
+              </div>
+              <div class="sb-hook-preview">A working mother packs her bag for the day. Under the laptop, the makeup bag, and the files — she hides a small Hero Baby jar and a pack of cereal. A ritual nobody sees.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">👜</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Packing bag. Hero Baby hidden under laptop and files. Secret ritual.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">🎭</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Nanny's video: baby won't eat. She watches under the desk. Mascara smudged. Smile gone.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🏠</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Comes home at 7 PM. Nanny: "He finished the whole jar." Baby reaches out. She holds him close.</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">❤️</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"شغلك بياخد منك 8 ساعات — بس القلب بيفضل هناك"</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>She comes home at 7 PM. The baby sees her and reaches out. The nanny says: "He ate everything — the Hero Baby puree you left? He finished the whole jar." She holds the baby, sits in the kitchen, opens a Hero Baby cereal for herself. Her husband walks in, sees them, smiles.</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥕 Mixed Vegetables Jar</span><span class="sb-product-tag">🍎 3 Fruits Jar</span><span class="sb-product-tag">🥣 8 Cereals with Milk</span><span class="sb-product-tag">🥛 NutraSense Stage 2</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — What's in your mom bag?</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 05 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">05</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heritage-emotional">Heritage + Emotional</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span><span class="sb-platform-tag">Instagram Reels</span><span class="sb-platform-tag">YouTube Shorts</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"سويسري من غير ما أسافر" — Swiss Without a Passport</div>
+              </div>
+              <div class="sb-hook-preview">A mother's cousin posts from Geneva — organic baby food, pristine Swiss clinic. The Egyptian mother looks at her baby, her small apartment, and thinks: "My baby deserves what hers has."</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🇨🇭</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Instagram comparison. Cousin in Geneva. Mom spiral: "Am I giving my baby less?"</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">📊</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Researching imported formulas, calculated in dollars. Husband: "Where is this coming from?"</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🩺</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Pediatrician pulls out Hero Baby: "Same company that makes the best baby food in Switzerland — produced right here."</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🇨🇭</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"سويسري في المعايير — مصري في القلب"</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>The pediatrician reaches into his drawer, pulls out a Hero Baby product: <strong>"ده من نفس الشركه اللي بتصنع أحسن أكل أطفال في سويسرا — بنتج هنا في مصر، بنفس المعايير"</strong> ("This is from the same company that makes the best baby food in Switzerland — produced right here in Egypt, with the same standards.") Her eyes widen. She doesn't need a passport.</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🛡️ NutraSense HMO 1 & 2</span><span class="sb-product-tag">🛡️ NutraDefense 1, 2 & 3</span><span class="sb-product-tag">🥣 Full Cereal Range</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#سويسري_في_المعايير</em> — Did you know Hero Baby is Swiss-made?</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 06 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">06</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heartwarming">Heartwarming</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span><span class="sb-platform-tag">Instagram Reels</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"الجارة اللي بتلاحظ" — The Neighbor Who Notices</div>
+              </div>
+              <div class="sb-hook-preview">A young mother alone on her balcony, baby crying, at her breaking point — when the doorbell rings.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🚪</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Balcony. Baby crying. Young mom at breaking point. Doorbell rings.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">💔</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Elderly neighbor with Hero Baby cereal: "I heard him crying. My daughter was the same." Mom breaks down.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🤱</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Neighbor feeds the baby, tells her story from 30 years ago. "Babies don't need perfect mothers. They need present ones."</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">💝</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"أحيانا الملة اللي جنبك بتفضل أكتر من كل حاجة". Mom returns the favor — Hero Baby products on neighbor's doorstep.</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>She opens the door to find her elderly neighbor holding a bowl of Hero Baby cereal — <strong>"I heard him crying. My daughter was the same at his age. I know this works."</strong> The young mom breaks down — someone saw her, someone helped without judgment. The neighbor sits with her, feeds the baby, and tells her story from 30 years ago. <strong>"Babies don't need perfect mothers. They need present ones."</strong></p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥣 8 Cereals with Milk</span><span class="sb-product-tag">🥕 Mixed Vegetables</span><span class="sb-product-tag">🍎 3 Fruits</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — Who's the neighbor who noticed you?</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 07 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">07</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge comedic-action">Comedic / Action</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"ماما بتصدر أوامر" — Mom's Orders</div>
+              </div>
+              <div class="sb-hook-preview">A phone rings at 6 AM. A dad picks up. His wife fires rapid-fire orders: "The cereal is in the blue cabinet. NOT the red one. Warm it 40 seconds NOT 60. And do NOT let him watch your phone."</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">📞</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">6 AM phone call. Wife fires rapid-fire orders like a military commander. Dad's eyes widen.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">🎬</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Action movie style: slow-motion cereal prep, intense music, microwave countdown like a bomb. Wrong temperature. PANIC.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🏆</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Improvises: adds Hero Baby fruit puree on top. Baby takes it, smiles. Dad celebrates like World Cup. Wife calls: "How's it going?" "Perfect. Easy."</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">😴</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"مش لازم تكونوا خبيرين — بس لازم تكونوا موجودين". Dad and baby asleep on couch. Kitchen is a disaster.</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>The dad — shirtless, sleep-deprived, heroically attempts to follow every instruction perfectly. Dramatic action movie style: slow-motion cereal prep, intense music, checking timestamps on the microwave like it's a bomb countdown. He gets the temperature wrong — the baby makes a face. PANIC. He improvises — adds a tiny bit of the Hero Baby fruit puree on top. Baby smiles. Wife calls: <strong>"How's it going?"</strong> He casually: <strong>"Perfect. Easy."</strong> (He's drenched in sweat, kitchen is a disaster zone)</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥣 8 Cereals</span><span class="sb-product-tag">🍎 3 Fruits</span><span class="sb-product-tag">🥣 Wheat with Milk</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — Tag the dad who survived feeding duty</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 08 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">08</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heritage-emotional">Heritage + Emotional</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">Instagram Reels</span><span class="sb-platform-tag">Facebook</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"الشقة الصغيرة" — The Small Apartment</div>
+              </div>
+              <div class="sb-hook-preview">A grandmother visits her daughter's small apartment for the first time since the baby was born. She looks around — the small space, the single window, the modest kitchen. She says nothing, but her face says everything.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🏠</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Grandmother's first visit. Small apartment. Her face says everything. Daughter braces for judgment.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">⏪</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Instead: she sees fridge stocked with Hero Baby. Flashback: her own small apartment in the 80s, same struggle, different era.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">🥣</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Grandmother prepares Hero Baby meal. "الشقة الصغيرة مابتمنعش حاجة — بس لو في حاجة حلوة جواها"</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🌅</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"الجودة مش في المكان — الجودة في الحب اللي بيغذي". Same apartment, golden light, three generations sharing a meal.</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>The grandmother goes to the kitchen, opens the fridge, and sees it stocked with Hero Baby products. She nods. Flashback: the grandmother's own small apartment in the 80s, raising her daughter with basic means but unlimited love. She sits with the baby and prepares a Hero Baby meal. <strong>"الشقة الصغيرة مابتمنعش حاجة — بس لو في حاجة حلوة جواها"</strong> ("A small apartment doesn't stop anything — as long as there's something sweet inside it.")</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥕 Full Pureed Food Range</span><span class="sb-product-tag">🥣 Cereals</span><span class="sb-product-tag">🛡️ NutraSense</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — Share a photo of your small apartment filled with love</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 09 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">09</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge comedic-action">Action / Comedy</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"الأولاد بتاعتك ولا بتاعي؟" — Your Kids or Mine?</div>
+              </div>
+              <div class="sb-hook-preview">Two mothers meet at a playground. One has a perfect diaper bag, organic snacks, imported toys. The other has a Hero Baby jar, a crumpled tissue, and keys.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🏃‍♀️</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Playground bench. Organic mom vs Hero Baby mom. Competition begins.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">😤</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">"My baby only eats homemade food." Organic mom's baby refuses her food. Hero Baby mom slides her jar over silently. Baby eats immediately.</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">😂</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Organic mom: "Okay fine — WHAT is this?" Third mom walks by: "You're both wrong — mine eats sand." Beat. "Actually, Hero Baby biscuits."</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🎉</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"أهم حاجة إن الطفل يأكل — والسعادة تبقى من غير منافسة". Three moms laughing, babies sharing biscuits.</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>Rapid-fire comedy of comparisons. <strong>"My baby only eats homemade food."</strong> / <strong>"Mine only eats what's in a jar — and he's healthier than both of us."</strong> The organic mom's baby starts crying, refuses her homemade food. The Hero Baby mom, without a word, slides her jar over. <strong>"Try this."</strong> The baby eats immediately. The organic mom's jaw drops. A third mom walks by with two toddlers: <strong>"You're both wrong — mine eats sand."</strong> Cut to black. Beat. <strong>"Actually, Hero Baby biscuits. He prefers them over sand."</strong></p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🍪 Baby Biscuits</span><span class="sb-product-tag">🍎 3 Fruits</span><span class="sb-product-tag">🥕 Mixed Vegetables</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — Which mom are you at the playground?</div></div>
+          </div></div>
+        </div>
+
+        <!-- ─── IDEA 10 ─── -->
+        <div class="storyboard-card" onclick="toggleIdea(this)">
+          <div class="sb-card-header">
+            <div class="sb-number-strip">10</div>
+            <div class="sb-card-content">
+              <div class="sb-top-row">
+                <span class="sb-type-badge heritage-action">Heritage + Action</span>
+                <div class="sb-platforms"><span class="sb-platform-tag">TikTok Series</span><span class="sb-platform-tag">Facebook</span></div>
+              </div>
+              <div class="sb-titles">
+                <div class="sb-title-en">"صيف الصعيد" — Upper Egypt Summer</div>
+              </div>
+              <div class="sb-hook-preview">A family travels from Cairo to their village in Upper Egypt for summer. The grandmother has a clay pot — traditional food. The modern mother has her bag — Hero Baby products.</div>
+            </div>
+            <div class="sb-expand-icon">▼</div>
+          </div>
+          <div class="sb-expand-body"><div class="sb-expand-inner">
+            <div class="sb-frames">
+              <div class="sb-frame" data-frame="HOOK"><div class="sb-frame-icon">🏡</div><div class="sb-frame-label">Hook</div><div class="sb-frame-text">Village in Upper Egypt. Grandmother's clay pot vs mother's Hero Baby bag. Two worlds collide.</div></div>
+              <div class="sb-frame" data-frame="TENSION"><div class="sb-frame-icon">🔥</div><div class="sb-frame-label">Tension</div><div class="sb-frame-text">Great-grandmother insists on traditional food. Baby refuses it. Family tension. "Times changed, mama."</div></div>
+              <div class="sb-frame" data-frame="CLIMAX"><div class="sb-frame-icon">👴</div><div class="sb-frame-label">Climax</div><div class="sb-frame-text">Grandfather intervenes — mixes both. "الأصالة والجودة — إحنا بناخد الاتنين". Baby eats. Great-grandmother smiles.</div></div>
+              <div class="sb-frame" data-frame="RESOLVE"><div class="sb-frame-icon">🌇</div><div class="sb-frame-label">Resolve</div><div class="sb-frame-text">"سويسري في الجودة — مصري في الأصل — صعيدي في الروح". Three generations, clay pot and Hero Baby jar side by side.</div></div>
+            </div>
+            <div class="sb-script"><h4>Script Dialogue</h4><p>The great-grandmother insists the baby eats traditional food — <strong>"This is how we raised all of you."</strong> The mother gently disagrees — <strong>"Times changed, mama."</strong> But the great-grandmother's food is too salty, too textured for a baby. The baby refuses it. The grandfather — the silent authority — intervenes. He takes both the traditional food and the Hero Baby jar. He mixes them. <strong>"الأصالة والجودة — إحنا بناخد الاتنين"</strong> ("Authenticity and quality — we take both.") The baby eats. The great-grandmother smiles for the first time.</p></div>
+            <div class="sb-product-tags"><span class="sb-product-tag">🥣 Full Cereal Range</span><span class="sb-product-tag">🥕 Pureed Food</span><span class="sb-product-tag">🍪 Hero Baby Biscuits</span></div>
+            <div class="sb-cta-band"><span class="cta-icon">🔴</span><div class="cta-text">CTA: <em>#فيه_المفيد</em> — How do you blend tradition and modern parenting?</div></div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ BRAINSTORM TAB ═══ -->
+    <div class="idea-tab-panel" id="ideasPanel-brainstorm">
+      <div class="brainstorm-container">
+        <div class="brainstorm-form">
+          <h3>💡 Submit Your Idea</h3>
+          <p class="form-desc">Got a micro drama concept for Hero Baby? Share it here.</p>
+          <div class="sb-form-row">
+            <div class="sb-form-group">
+              <label>Your Name</label>
+              <input type="text" id="sbName" placeholder="Enter your name">
+            </div>
+            <div class="sb-form-group">
+              <label>Idea Title</label>
+              <input type="text" id="sbTitle" placeholder="Give your idea a catchy title">
+            </div>
+          </div>
+          <div class="sb-form-group">
+            <label>Type</label>
+            <select id="sbType">
+              <option value="emotional">Emotional</option>
+              <option value="comedic">Comedic</option>
+              <option value="heritage">Heritage</option>
+              <option value="action">Action</option>
+              <option value="heartwarming">Heartwarming</option>
+              <option value="heritage-emotional">Heritage + Emotional</option>
+              <option value="comedic-action">Comedic / Action</option>
+              <option value="heritage-action">Heritage + Action</option>
+            </select>
+          </div>
+          <div class="sb-form-group">
+            <label>Hook</label>
+            <textarea id="sbHook" placeholder="What's the opening scene? The first 3 seconds that grab attention..."></textarea>
+          </div>
+          <div class="sb-form-group">
+            <label>Script / Story Outline</label>
+            <textarea id="sbScript" placeholder="Describe the tension, climax, and resolution..."></textarea>
+          </div>
+          <button class="sb-submit-btn" onclick="submitIdea()">🚀 Submit Idea</button>
+        </div>
+
+        <div class="submitted-ideas-title">📝 Submitted Ideas <span class="count-badge" id="submittedCount">0</span></div>
+        <div class="storyboard-grid" id="submittedIdeas"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="insight-box">
+    <h3>🎬 Why These Ideas Work for Hero Baby</h3>
+    <p>Each idea is rooted in a <strong>real Egyptian mother pain point</strong>, connected to <strong>Hero Baby's product strengths</strong>, and wrapped in <strong>Hadoota's cinematic storytelling</strong>. They all serve the #فيه_المفيد platform while adding the emotional depth that's currently missing — turning functional benefits into stories mothers can't stop watching.</p>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-brand">حدوتة</div>
+  <div class="footer-line"></div>
+  <p>Non-Stop Streaming. Non-Stop Storytelling.</p>
+  <p style="margin-top: 1rem; color: var(--gray-700);">Prepared for Hero Baby Egypt — June 2026</p>
+</footer>
+
+<script>
+// ── Scroll Progress ──
+const progressBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  progressBar.style.width = progress + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', scrollTop > 50);
+});
+
+// ── Intersection Observer ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.observe-section').forEach(s => observer.observe(s));
+
+// ── Nav Dots ──
+const sections = ['cover', 'brand', 'products', 'audience', 'campaigns', 'opportunity', 'ideas'];
+const dots = document.querySelectorAll('.nav-dot');
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.getElementById(dot.dataset.section).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      dots.forEach(d => d.classList.toggle('active', d.dataset.section === id));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
+
+// ── Product Card Toggle ──
+function toggleCard(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.product-card.expanded').forEach(c => {
+    c.classList.remove('expanded');
+    c.querySelector('.expand-hint').textContent = 'Click to see all variants →';
+  });
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+    card.querySelector('.expand-hint').textContent = 'Click to collapse ↑';
+  }
+}
+
+// ── Pain Tabs ──
+function switchTab(tabName) {
+  document.querySelectorAll('.pain-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pain-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
+}
+
+// ── Stat Counter Animation ──
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      entry.target.dataset.animated = 'true';
+      entry.target.querySelectorAll('.stat-number').forEach(stat => {
+        const text = stat.textContent;
+        const match = text.match(/([\d.]+)/);
+        if (!match) return;
+        const target = parseFloat(match[1]);
+        const suffix = text.replace(match[1], '').trim();
+        const isFloat = text.includes('.');
+        let current = 0;
+        const step = target / 40;
+        const interval = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(interval); }
+          let html = isFloat ? current.toFixed(1) : Math.floor(current);
+          if (suffix.includes('+')) html += '<span class="red">+</span>';
+          if (suffix.includes('K')) html += '<span class="red">K</span>';
+          stat.innerHTML = html;
+        }, 30);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.stats-grid').forEach(g => statObserver.observe(g));
+
+// ── Idea Hub: Toggle Storyboard Card ──
+function toggleIdea(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.storyboard-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) card.classList.add('expanded');
+}
+
+// ── Idea Hub: Switch Tabs ──
+function switchIdeaTab(tabName) {
+  document.querySelectorAll('.idea-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.idea-tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.closest('.idea-tab-btn').classList.add('active');
+  document.getElementById('ideasPanel-' + tabName).classList.add('active');
+}
+
+// ── Idea Hub: Submit Brainstorm Idea ──
+let submittedCount = 0;
+function submitIdea() {
+  const name = document.getElementById('sbName').value.trim();
+  const title = document.getElementById('sbTitle').value.trim();
+  const type = document.getElementById('sbType').value;
+  const hook = document.getElementById('sbHook').value.trim();
+  const script = document.getElementById('sbScript').value.trim();
+
+  if (!name || !title || !hook) { alert('Please fill in your name, title, and hook at minimum.'); return; }
+
+  submittedCount++;
+  const num = String(submittedCount).padStart(2, '0');
+  const typeLabels = {
+    'emotional': 'Emotional', 'comedic': 'Comedic', 'heritage': 'Heritage',
+    'action': 'Action', 'heartwarming': 'Heartwarming', 'heritage-emotional': 'Heritage + Emotional',
+    'comedic-action': 'Comedic / Action', 'heritage-action': 'Heritage + Action'
+  };
+  const typeLabel = typeLabels[type] || type;
+
+  const cardHTML = `
+    <div class="storyboard-card" onclick="toggleIdea(this)">
+      <div class="sb-card-header">
+        <div class="sb-number-strip">💡</div>
+        <div class="sb-card-content">
+          <div class="sb-top-row">
+            <span class="sb-type-badge ${type}">${typeLabel}</span>
+            <span class="sb-platform-tag" style="margin-left:auto;font-size:0.65rem;color:var(--gray-600);">by ${name}</span>
+          </div>
+          <div class="sb-titles"><div class="sb-title-en">${title}</div></div>
+          <div class="sb-hook-preview">${hook}</div>
+        </div>
+        <div class="sb-expand-icon">▼</div>
+      </div>
+      <div class="sb-expand-body"><div class="sb-expand-inner">
+        ${script ? `<div class="sb-script"><h4>Story Outline</h4><p>${script.replace(/\n/g, '<br>')}</p></div>` : ''}
+        <div class="sb-cta-band"><span class="cta-icon">💡</span><div class="cta-text">Community-submitted idea — <em>#فيه_المفيد</em></div></div>
+      </div></div>
+    </div>`;
+
+  document.getElementById('submittedIdeas').insertAdjacentHTML('beforeend', cardHTML);
+  document.getElementById('submittedCount').textContent = submittedCount;
+  document.getElementById('brainstormCount').textContent = submittedCount;
+
+  document.getElementById('sbName').value = '';
+  document.getElementById('sbTitle').value = '';
+  document.getElementById('sbHook').value = '';
+  document.getElementById('sbScript').value = '';
+  document.getElementById('sbType').selectedIndex = 0;
+}
+</script>
+
+</body>
+</html>
